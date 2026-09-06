@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>The Internet Button</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: white;
+            text-align: center;
+
+            transition: background 0.5s;
+        }
+
+        .container {
+            padding: 30px;
+        }
+
+        h1 {
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 20px;
+            margin-bottom: 35px;
+        }
+
+        button {
+            padding: 25px 50px;
+            font-size: 25px;
+            font-weight: bold;
+
+            border: none;
+            border-radius: 15px;
+
+            cursor: pointer;
+
+            background: white;
+            color: #111;
+
+            transition: 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.08);
+        }
+
+        #message {
+            margin-top: 30px;
+            font-size: 24px;
+            font-weight: bold;
+            min-height: 35px;
+        }
+
+        #counter {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        /* POPUP */
+
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+
+            transform: translate(-50%, -50%) scale(0);
+
+            width: 350px;
+            max-width: 90%;
+
+            padding: 30px;
+
+            background: white;
+            color: #111;
+
+            border-radius: 20px;
+
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+
+            transition: 0.3s;
+
+            z-index: 10;
+        }
+
+        .popup.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .popup h2 {
+            margin-top: 0;
+        }
+
+        .popup p {
+            font-size: 18px;
+            line-height: 1.5;
+        }
+
+        .close-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+
+            background: #111;
+            color: white;
+
+            border-radius: 10px;
+        }
+
+        .overlay {
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            background: rgba(0, 0, 0, 0.6);
+
+            display: none;
+
+            z-index: 5;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>THE INTERNET BUTTON</h1>
+
+        <p>⚠️ Seriously, don't click this.</p>
+
+        <button onclick="randomThing()" id="mainButton">
+            CLICK ME
+        </button>
+
+        <div id="message"></div>
+
+        <div id="counter">
+            Clicks: 0
+        </div>
+
+    </div>
+
+
+    <!-- DARK OVERLAY -->
+
+    <div class="overlay" id="overlay"></div>
+
+
+    <!-- RANDOM FACT POPUP -->
+
+    <div class="popup" id="popup">
+
+        <h2>🤯 RANDOM FACT</h2>
+
+        <p id="fact"></p>
+
+        <button class="close-btn" onclick="closePopup()">
+            CLOSE
+        </button>
+
+    </div>
+
+
+    <script>
+
+        let clicks = 0;
+
+
+        // RANDOM FACTS
+
+        const facts = [
+
+            "Octopuses have three hearts. 🐙",
+
+            "Bananas are technically berries. 🍌",
+
+            "A day on Venus is longer than a year on Venus. 🪐",
+
+            "Honey can last for an extremely long time without spoiling. 🍯",
+
+            "Wombat poop is cube-shaped. 💀",
+
+            "Sharks existed before trees. 🦈",
+
+            "Cows can form close friendships with other cows. 🐄",
+
+            "The Eiffel Tower can become slightly taller when it gets hot. 🗼",
+
+            "Some turtles can breathe through their skin. 🐢",
+
+            "A group of flamingos is called a flamboyance. 🦩",
+
+            "Your fingerprints are different from everyone else's. 👆",
+
+            "Jellyfish have existed for hundreds of millions of years. 🌊",
+
+            "Koalas have fingerprints that can look surprisingly similar to human fingerprints. 🐨",
+
+            "Some frogs can freeze during winter and thaw out later. 🐸",
+
+            "The human brain itself does not have pain receptors. 🧠"
+
+        ];
+
+
+        // RANDOM BACKGROUNDS
+
+        const backgrounds = [
+
+            "#111827",
+            "#312e81",
+            "#4c1d95",
+            "#831843",
+            "#164e63",
+            "#064e3b",
+            "#713f12",
+            "#7f1d1d"
+
+        ];
+
+
+        // RANDOM MESSAGES
+
+        const messages = [
+
+            "WHY DID YOU CLICK IT 💀",
+
+            "Bro really clicked it.",
+
+            "I TOLD YOU NOT TO 😭",
+
+            "Congratulations. You did absolutely nothing.",
+
+            "The button is disappointed in you.",
+
+            "Your curiosity has been defeated.",
+
+            "That was... unnecessary.",
+
+            "Bro has unlimited free time 💀",
+
+            "You clicked it AGAIN?!",
+
+            "STOP CLICKING ME 😭"
+
+        ];
+
+
+        function randomThing() {
+
+            // Increase clicks
+
+            clicks++;
+
+
+            // Pick random fact
+
+            const randomFact =
+                facts[Math.floor(Math.random() * facts.length)];
+
+
+            // Pick random message
+
+            const randomMessage =
+                messages[Math.floor(Math.random() * messages.length)];
+
+
+            // Pick random background
+
+            const randomBackground =
+                backgrounds[Math.floor(Math.random() * backgrounds.length)];
+
+
+            // Show message
+
+            document.getElementById("message").textContent =
+                randomMessage;
+
+
+            // Update counter
+
+            document.getElementById("counter").textContent =
+                "Clicks: " + clicks;
+
+
+            // Change background
+
+            document.body.style.background =
+                randomBackground;
+
+
+            // Random button rotation
+
+            const rotation =
+                Math.floor(Math.random() * 21) - 10;
+
+
+            document.getElementById("mainButton").style.transform =
+                "rotate(" + rotation + "deg)";
+
+
+            // Put fact inside popup
+
+            document.getElementById("fact").textContent =
+                randomFact;
+
+
+            // Show popup
+
+            document.getElementById("popup").classList.add("show");
+
+            document.getElementById("overlay").classList.add("show");
+
+        }
+
+
+        function closePopup() {
+
+            document.getElementById("popup").classList.remove("show");
+
+            document.getElementById("overlay").classList.remove("show");
+
+        }
+
+    </script>
+
+</body>
+</html>
